@@ -46,7 +46,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={nameFont.variable}>
+      <body className={nameFont.variable} suppressHydrationWarning>
         <div className="site-root min-h-screen w-full flex flex-col justify-between">
           <div>
             <Header />
