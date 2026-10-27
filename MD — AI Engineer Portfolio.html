@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="MD — AI Engineer and Computer Science student building LLM infrastructure, agentic systems, and applied machine learning projects." />
+  <title>MD — AI Engineer</title>
+  <style>
+    :root {
+      --site-primary: #78d9b2;
+      --site-secondary: #292b2e;
+      --site-background: #171819;
+      --site-on-primary: #10251d;
+      --site-on-secondary: #f0f1f2;
+      --site-on-background: #e8e9eb;
+      --site-font-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --site-font-heading: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --site-heading-scale: 1;
+      --site-spacing-scale: 1;
+      --site-radius-scale: 1;
+      --site-decoration-opacity: 1;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--site-font-body);
+      background: light-dark(#f7f8f7, var(--site-background));
+      color: light-dark(#1b1d1e, var(--site-on-background));
+      color-scheme: light dark;
+      line-height: 1.6;
+      transition: background .2s ease, color .2s ease;
+    }
+    html[data-theme="dark"] { color-scheme: dark; }
+    html[data-theme="light"] { color-scheme: light; }
+    .site-root {
+      min-height: 100vh;
+      width: 100%;
+      border-radius: 0;
+      background-color: light-dark(#f7f8f7, var(--site-background));
+    }
+    .wrap { width: min(100% - 40px, 760px); margin: 0 auto; }
+    header { padding: calc(16px * var(--site-spacing-scale)) 0; }
+    .nav { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .brand { color: inherit; font-weight: 750; letter-spacing: -.04em; text-decoration: none; font-size: 19px; }
+    .nav-right { display: flex; align-items: center; gap: 22px; }
+    nav { display: flex; align-items: center; gap: 20px; }
+    nav a, .text-link { color: light-dark(#555c5b, #b6b8bb); text-decoration: none; font-size: 13px; transition: color .15s ease; }
+    nav a:hover, .text-link:hover { color: var(--site-primary); }
+    .resume-link { color: var(--site-primary); }
+    .theme-toggle { border: 0; background: transparent; color: inherit; font-size: 16px; cursor: pointer; padding: 4px; }
+    main { padding-top: calc(34px * var(--site-spacing-scale)); }
+    .eyebrow { font-size: 10px; text-transform: uppercase; letter-spacing: .16em; color: light-dark(#727977, #96999e); margin: 0 0 12px; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { font-family: var(--site-font-heading); font-size: clamp(29px, calc(38px * var(--site-heading-scale)), 44px); letter-spacing: -.045em; line-height: 1.2; font-weight: 650; margin-bottom: 12px; }
+    .intro { max-width: 620px; font-size: 15px; color: light-dark(#555d5b, #b3b5b8); margin-bottom: 14px; }
+    .socials { display: flex; gap: 15px; flex-wrap: wrap; font-size: 13px; margin-bottom: calc(34px * var(--site-spacing-scale)); }
+    .socials a, .accent { color: light-dark(#087b5a, var(--site-primary)); text-decoration: none; }
+    .socials a:hover { text-decoration: underline; }
+    .section { margin-top: calc(30px * var(--site-spacing-scale)); }
+    .section-heading { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .section-heading h2 { font-size: 19px; line-height: 1.3; letter-spacing: -.025em; margin: 0; font-weight: 650; }
+    .section-rule { flex: 1; height: 1px; background: light-dark(#e1e4e2, #353739); }
+    .section-action { color: light-dark(#087b5a, var(--site-primary)); font-size: 12px; text-decoration: none; white-space: nowrap; }
+    .project-list, .note-list { display: grid; gap: 9px; }
+    .project, .note {
+      background: light-dark(#fff, #252628);
+      border: 1px solid light-dark(#e5e7e6, #2e3032);
+      border-radius: calc(7px * var(--site-radius-scale));
+      padding: calc(15px * var(--site-spacing-scale)) calc(17px * var(--site-spacing-scale));
+      transition: border-color .15s ease, transform .15s ease;
+    }
+    .project:hover, .note:hover { border-color: light-dark(#b8c9c1, #4c6259); }
+    .project-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+    .project h3, .note h3 { font-size: 16px; font-weight: 650; letter-spacing: -.02em; margin: 0 0 3px; }
+    .project p, .note p { color: light-dark(#5f6563, #b3b5b8); font-size: 13px; line-height: 1.55; margin: 0 0 9px; }
+    .repo { flex-shrink: 0; color: light-dark(#087b5a, var(--site-primary)); font-size: 12px; text-decoration: none; }
+    .tags { display: flex; flex-wrap: wrap; gap: 7px 11px; color: light-dark(#747a77, #96999d); font-size: 11px; }
+    .tags span + span::before { content: "·"; margin-right: 11px; color: light-dark(#b1b5b3, #66696c); }
+    .note h3 { font-size: 14px; }
+    .note p { margin-bottom: 5px; }
+    .meta { font-size: 11px; color: light-dark(#858b88, #85898d); }
+    .skills-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 24px; }
+    .skill-group { border-left: 1px solid light-dark(#dfe3e0, #353739); padding-left: 13px; }
+    .skill-group h3 { font-size: 12px; margin-bottom: 4px; font-weight: 650; }
+    .skill-group p { color: light-dark(#626966, #a5a8ac); font-size: 12px; margin: 0; line-height: 1.65; }
+    .about-row { display: grid; grid-template-columns: 115px 1fr; gap: 16px; }
+    .about-row h2 { font-size: 19px; margin: 0; letter-spacing: -.025em; }
+    .about-row p { color: light-dark(#626966, #a5a8ac); font-size: 13px; margin: 0; }
+    footer { margin-top: calc(34px * var(--site-spacing-scale)); padding: 14px 0 22px; border-top: 1px solid light-dark(#e0e3e1, #353739); color: light-dark(#818783, #898d91); font-size: 11px; }
+    .footer-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .footer-skills { color: light-dark(#6c726f, #96999d); }
+    .footer-links { display: flex; gap: 12px; }
+    .footer-links a { color: light-dark(#087b5a, var(--site-primary)); text-decoration: none; }
+    .placeholder-note { color: light-dark(#7a817e, #85898d); font-size: 11px; margin-top: 18px; }
+    @media (min-width: 760px) { .skills-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+    @media (max-width: 560px) {
+      .wrap { width: min(100% - 30px, 760px); }
+      .nav { align-items: flex-start; }
+      .nav-right { gap: 10px; }
+      nav { gap: 11px; flex-wrap: wrap; justify-content: flex-end; }
+      nav a { font-size: 12px; }
+      .resume-link { display: none; }
+      main { padding-top: 28px; }
+      h1 { font-size: 30px; }
+      .project-top { align-items: flex-start; }
+      .skills-grid { grid-template-columns: 1fr 1fr; }
+      .about-row { grid-template-columns: 1fr; gap: 8px; }
+      .section-heading h2 { font-size: 17px; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; } }
+  </style>
+</head>
+<body>
+  <div class="site-root">
+    <div class="wrap">
+      <header>
+        <div class="nav">
+          <a class="brand" href="#top" aria-label="MD home">MD.</a>
+          <div class="nav-right">
+            <nav aria-label="Main navigation">
+              <a href="#projects">Projects</a>
+              <a href="#notes">Notes</a>
+              <a href="#about">About</a>
+              <a href="#contact">Contact</a>
+            </nav>
+            <button class="theme-toggle" id="themeToggle" aria-label="Switch color theme" title="Switch color theme">☼</button>
+            <a class="text-link resume-link" href="YOUR_RESUME_URL" target="_blank" rel="noreferrer">Resume ↗</a>
+          </div>
+        </div>
+      </header>
+      <main id="top">
+        <section aria-labelledby="intro-title">
+          <p class="eyebrow">AI Engineer / Computer Science Student</p>
+          <h1 id="intro-title">I build AI systems and study how they work.</h1>
+          <p class="intro">Computer Science student focused on LLM infrastructure, agentic systems, and applied machine learning. I learn by building real projects from scratch and deploying them.</p>
+          <div class="socials" id="contact">
+            <a href="YOUR_GITHUB_URL" target="_blank" rel="noreferrer">GitHub ↗</a>
+            <span aria-hidden="true">·</span>
+            <a href="YOUR_LINKEDIN_URL" target="_blank" rel="noreferrer">LinkedIn ↗</a>
+            <span aria-hidden="true">·</span>
+            <a href="mailto:YOUR_EMAIL@example.com">Email ↗</a>
+          </div>
+        </section>
+
+        <section class="section" id="projects" aria-labelledby="projects-title">
+          <div class="section-heading">
+            <h2 id="projects-title">Selected Projects</h2>
+            <div class="section-rule"></div>
+            <a class="section-action" href="YOUR_GITHUB_URL">View all projects ↗</a>
+          </div>
+          <div class="project-list">
+            <article class="project">
+              <div class="project-top"><h3>NanoInfer</h3><a class="repo" href="YOUR_NANOINFER_REPO" target="_blank" rel="noreferrer">GitHub ↗</a></div>
+              <p>Minimal LLM inference server with KV caching, continuous batching, and a streaming API. Inspired by vLLM, built in Python and PyTorch.</p>
+              <div class="tags"><span>LLM Inference</span><span>PyTorch</span><span>KV Cache</span><span>Continuous Batching</span><span>Serving</span></div>
+            </article>
+            <article class="project">
+              <div class="project-top"><h3>AI Customer Support Agent</h3><a class="repo" href="YOUR_SUPPORT_AGENT_REPO" target="_blank" rel="noreferrer">GitHub ↗</a></div>
+              <p>Tool-using customer support agent with LangGraph, PostgreSQL, memory, and policy-based decision-making for order lookups, refunds, and escalations.</p>
+              <div class="tags"><span>Agents</span><span>LangGraph</span><span>PostgreSQL</span><span>Tools</span><span>Docker</span></div>
+            </article>
+            <article class="project">
+              <div class="project-top"><h3>GPT from Scratch</h3><a class="repo" href="YOUR_GPT_REPO" target="_blank" rel="noreferrer">GitHub ↗</a></div>
+              <p>GPT-style language model implemented from scratch using NumPy and PyTorch, including tokenization, transformer blocks, and training on TinyStories.</p>
+              <div class="tags"><span>LLM Training</span><span>Transformers</span><span>Tokenizer</span><span>PyTorch</span><span>TinyStories</span></div>
+            </article>
+            <article class="project">
+              <div class="project-top"><h3>RAG & Retrieval Systems</h3><a class="repo" href="YOUR_RAG_REPO" target="_blank" rel="noreferrer">GitHub ↗</a></div>
+              <p>Retrieval-augmented generation pipeline using embeddings, vector search, and grounded responses over domain-specific documents.</p>
+              <div class="tags"><span>RAG</span><span>LangChain</span><span>Embeddings</span><span>Vector Search</span></div>
+            </article>
+          </div>
+        </section>
+
+        <section class="section" id="notes" aria-labelledby="notes-title">
+          <div class="section-heading">
+            <h2 id="notes-title">Notes</h2>
+            <div class="section-rule"></div>
+            <a class="section-action" href="YOUR_NOTES_URL">All notes ↗</a>
+          </div>
+          <div class="note-list">
+            <article class="note">
+              <h3>Understanding KV Caching in Autoregressive Generation</h3>
+              <p>How caching attention keys and values avoids recomputing the full context at every generation step.</p>
+              <div class="meta">LLM Inference · 8 min read · <span>Draft topic</span></div>
+            </article>
+            <article class="note">
+              <h3>What Continuous Batching Actually Solves</h3>
+              <p>A practical look at request scheduling, throughput, and the trade-offs involved in LLM serving.</p>
+              <div class="meta">Serving Systems · 6 min read · <span>Draft topic</span></div>
+            </article>
+          </div>
+        </section>
+
+        <section class="section" id="skills" aria-labelledby="skills-title">
+          <div class="section-heading"><h2 id="skills-title">Technical Skills</h2><div class="section-rule"></div></div>
+          <div class="skills-grid">
+            <div class="skill-group"><h3>AI / ML & LLMs</h3><p>Python, PyTorch, TensorFlow, Transformers, RAG, Hugging Face, scikit-learn</p></div>
+            <div class="skill-group"><h3>Agents & Retrieval</h3><p>LangChain, LangGraph, embeddings, vector search, tool calling</p></div>
+            <div class="skill-group"><h3>Backend & Data</h3><p>FastAPI, PostgreSQL, SQL, REST APIs, MongoDB</p></div>
+            <div class="skill-group"><h3>Infrastructure</h3><p>Docker, Git, Linux, AWS fundamentals, model serving</p></div>
+          </div>
+        </section>
+
+        <section class="section about-row" id="about" aria-labelledby="about-title">
+          <h2 id="about-title">About</h2>
+          <p>Pre-final-year Computer Science student at Government Engineering College, Ajmer. Interested in LLM systems, agentic AI, and building reliable machine learning applications. I prefer learning by implementing, measuring, and documenting what I build.</p>
+        </section>
+      </main>
+      <footer>
+        <div class="footer-row">
+          <span>© 2026 MD. Built with curiosity.</span>
+          <span class="footer-skills">Python · PyTorch · Transformers · LangGraph · PostgreSQL</span>
+          <span class="footer-links"><a href="#about">About</a><a href="#contact">Contact</a></span>
+        </div>
+        <p class="placeholder-note">Template note: replace links beginning with YOUR_ and verify project descriptions before publishing.</p>
+      </footer>
+    </div>
+  </div>
+  <script>
+    const root = document.documentElement;
+    const toggle = document.getElementById('themeToggle');
+    toggle.addEventListener('click', () => {
+      const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+      root.dataset.theme = next;
+      toggle.textContent = next === 'dark' ? '☼' : '☾';
+      toggle.setAttribute('aria-label', next === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+    });
+  </script>
+</body>
+</html>
