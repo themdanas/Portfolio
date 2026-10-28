@@ -39,6 +39,11 @@ export function getAllNotes(): NoteMeta[] {
         readTime: data.readTime as string | undefined,
         category: data.category as string | undefined,
       };
+    })
+    .sort((a, b) => {
+      if (!a.date) return 1;
+      if (!b.date) return -1;
+      return b.date.localeCompare(a.date);
     });
 
   return notes;
@@ -46,8 +51,12 @@ export function getAllNotes(): NoteMeta[] {
 
 export function getNoteBySlug(slug: string): NoteItem | null {
   try {
-    const mdPath = path.join(notesDirectory, `${slug}.md`);
-    const mdxPath = path.join(notesDirectory, `${slug}.mdx`);
+    const targetSlug =
+      slug === "ddpm-experiments" || slug === "ddpm_experiments"
+        ? "ddpm-forward-reverse-diffusion"
+        : slug;
+    const mdPath = path.join(notesDirectory, `${targetSlug}.md`);
+    const mdxPath = path.join(notesDirectory, `${targetSlug}.mdx`);
     const fullPath = fs.existsSync(mdPath) ? mdPath : fs.existsSync(mdxPath) ? mdxPath : null;
 
     if (!fullPath) {

@@ -11,7 +11,7 @@ import { siteUrl } from "@/data/site";
 
 export default function HomePage() {
   const featuredProjects = projects.filter((p) => p.featured !== false).slice(0, 3);
-  const notes = getAllNotes().slice(0, 2);
+  const notes = getAllNotes().slice(0, 3);
 
   return (
     <>

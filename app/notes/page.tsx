@@ -6,7 +6,7 @@ import { pageMetadata } from "@/lib/seo";
 export const metadata = pageMetadata({
   title: "Notes",
   description:
-    "Technical notes by MD Anas on LLM inference, KV caching, continuous batching, and the systems behind serving language models.",
+    "Technical notes by MD Anas on diffusion models, LLM inference, KV caching, continuous batching, and serving systems.",
   path: "/notes",
 });
 
