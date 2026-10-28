@@ -2,15 +2,28 @@ import StackList from "@/components/StackList";
 import PageIntro from "@/components/ui/PageIntro";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { siteConfig } from "@/data/site";
+import JsonLd from "@/components/JsonLd";
+import { absoluteUrl, breadcrumbSchema, pageMetadata, personId } from "@/lib/seo";
 
-export const metadata = {
-  title: "About — MD Anas",
-  description: "About MD Anas, an AI Systems & LLM Infrastructure Engineer.",
-};
+export const metadata = pageMetadata({
+  title: "About",
+  description:
+    "About MD Anas, an AI Engineer and Computer Science student at Government Engineering College, Ajmer, working on LLM infrastructure, AI agents, and applied machine learning.",
+  path: "/about",
+});
 
 export default function AboutPage() {
   return (
     <>
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@graph": [
+            { "@type": "AboutPage", url: absoluteUrl("/about"), name: `About ${siteConfig.name}`, mainEntity: { "@id": personId } },
+            breadcrumbSchema([{ name: "Home", path: "/" }, { name: "About", path: "/about" }]),
+          ],
+        }}
+      />
       <PageIntro title="About" />
 
       <div className="prose">

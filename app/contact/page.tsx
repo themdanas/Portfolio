@@ -2,11 +2,15 @@ import CopyButton from "@/components/CopyButton";
 import ExternalLink from "@/components/ui/ExternalLink";
 import PageIntro from "@/components/ui/PageIntro";
 import { siteConfig } from "@/data/site";
+import JsonLd from "@/components/JsonLd";
+import { absoluteUrl, breadcrumbSchema, pageMetadata, personId } from "@/lib/seo";
 
-export const metadata = {
-  title: "Contact — MD Anas",
-  description: "Get in touch with MD Anas.",
-};
+export const metadata = pageMetadata({
+  title: "Contact",
+  description:
+    "Contact MD Anas for AI engineering roles, LLM systems work, collaborations, and open-source projects. Reach out by email, GitHub, or LinkedIn.",
+  path: "/contact",
+});
 
 const email = siteConfig.socials.email.replace(/^mailto:/, "");
 
@@ -19,6 +23,15 @@ const channels = [
 export default function ContactPage() {
   return (
     <>
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@graph": [
+            { "@type": "ContactPage", url: absoluteUrl("/contact"), name: `Contact ${siteConfig.name}`, mainEntity: { "@id": personId } },
+            breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Contact", path: "/contact" }]),
+          ],
+        }}
+      />
       <PageIntro title="Contact">
         Open to AI systems engineering roles, collaborations, and open-source work. Email is the fastest way to reach me.
       </PageIntro>

@@ -1,11 +1,14 @@
 import NoteRow from "@/components/NoteRow";
 import PageIntro from "@/components/ui/PageIntro";
 import { getAllNotes } from "@/lib/notes";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata = {
-  title: "Notes — MD Anas",
-  description: "Technical writing and research notes on LLM inference and distributed systems.",
-};
+export const metadata = pageMetadata({
+  title: "Notes",
+  description:
+    "Technical notes by MD Anas on LLM inference, KV caching, continuous batching, and the systems behind serving language models.",
+  path: "/notes",
+});
 
 export default function NotesPage() {
   const notes = getAllNotes();

@@ -1,11 +1,14 @@
 import ProjectPlate from "@/components/ProjectPlate";
 import PageIntro from "@/components/ui/PageIntro";
 import { projects } from "@/data/projects";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata = {
-  title: "Work — MD Anas",
-  description: "AI systems, LLM serving engines, and autonomous agents built by MD Anas.",
-};
+export const metadata = pageMetadata({
+  title: "Work",
+  description:
+    "Projects by MD Anas: an LLM inference server, a LangGraph support agent, GPT and diffusion language models from scratch, RAG pipelines, and LoRA fine-tuning.",
+  path: "/projects",
+});
 
 export default function ProjectsPage() {
   return (

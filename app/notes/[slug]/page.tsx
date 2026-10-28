@@ -2,7 +2,9 @@ import { notFound } from "next/navigation";
 import { marked } from "marked";
 import BackLink from "@/components/ui/BackLink";
 import { getAllNotes, getNoteBySlug } from "@/lib/notes";
+import JsonLd from "@/components/JsonLd";
 import { formatDate } from "@/lib/format";
+import { absoluteUrl, breadcrumbSchema, pageMetadata, personSchema } from "@/lib/seo";
 
 interface NotePageProps {
   params: Promise<{
@@ -20,12 +22,20 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: NotePageProps) {
   const { slug } = await params;
   const note = getNoteBySlug(slug);
-  if (!note) return { title: "Note Not Found" };
+  if (!note) return { title: "Note Not Found", robots: { index: false } };
 
-  return {
-    title: `${note.title} — MD Anas`,
+  return pageMetadata({
+    title: note.title,
     description: note.description,
-  };
+    path: `/notes/${note.slug}`,
+    keywords: note.category ? [note.category] : [],
+    openGraph: {
+      type: "article",
+      publishedTime: note.date,
+      authors: [absoluteUrl("/about")],
+      section: note.category,
+    },
+  });
 }
 
 export default async function NotePage({ params }: NotePageProps) {
@@ -39,8 +49,37 @@ export default async function NotePage({ params }: NotePageProps) {
   const htmlContent = await marked.parse(note.content);
   const meta = [note.category, note.date && formatDate(note.date), note.readTime].filter(Boolean);
 
+  const url = absoluteUrl(`/notes/${note.slug}`);
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BlogPosting",
+        "@id": `${url}#article`,
+        headline: note.title,
+        description: note.description,
+        url,
+        mainEntityOfPage: url,
+        image: `${url}/opengraph-image`,
+        datePublished: note.date,
+        dateModified: note.date,
+        articleSection: note.category,
+        inLanguage: "en",
+        author: personSchema,
+        publisher: { "@id": personSchema["@id"] },
+      },
+      breadcrumbSchema([
+        { name: "Home", path: "/" },
+        { name: "Notes", path: "/notes" },
+        { name: note.title, path: `/notes/${note.slug}` },
+      ]),
+    ],
+  };
+
   return (
     <article>
+      <JsonLd data={jsonLd} />
+
       <header className="mb-12 sm:mb-14">
         <BackLink href="/notes">Notes</BackLink>
 

@@ -4,7 +4,10 @@ import NoteRow from "@/components/NoteRow";
 import StackList from "@/components/StackList";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { projects } from "@/data/projects";
+import JsonLd from "@/components/JsonLd";
 import { getAllNotes } from "@/lib/notes";
+import { personSchema, websiteId } from "@/lib/seo";
+import { siteUrl } from "@/data/site";
 
 export default function HomePage() {
   const featuredProjects = projects.filter((p) => p.featured !== false).slice(0, 3);
@@ -12,6 +15,15 @@ export default function HomePage() {
 
   return (
     <>
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "ProfilePage",
+          url: siteUrl,
+          isPartOf: { "@id": websiteId },
+          mainEntity: personSchema,
+        }}
+      />
       <Hero />
 
       <section className="mt-[var(--section-gap)]" aria-labelledby="work-title">

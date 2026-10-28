@@ -5,7 +5,9 @@ import Footer from "@/components/Footer";
 import Backdrop from "@/components/Backdrop";
 import EdgeBlur from "@/components/EdgeBlur";
 import SmoothScroll from "@/components/SmoothScroll";
-import { siteConfig } from "@/data/site";
+import JsonLd from "@/components/JsonLd";
+import { siteConfig, siteUrl } from "@/data/site";
+import { personSchema, websiteSchema } from "@/lib/seo";
 import "./globals.css";
 
 const sans = Hanken_Grotesk({
@@ -19,14 +21,48 @@ const mono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: siteConfig.title,
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: siteConfig.title,
+    template: `%s — ${siteConfig.name}`,
+  },
   description: siteConfig.description,
-  authors: [{ name: siteConfig.name }],
-  metadataBase: new URL("https://mdanas.dev"),
+  keywords: siteConfig.keywords,
+  authors: [{ name: siteConfig.name, url: siteUrl }],
+  creator: siteConfig.name,
+  publisher: siteConfig.name,
+  applicationName: siteConfig.name,
+  category: "technology",
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
+    type: "website",
+    url: "/",
+    siteName: siteConfig.name,
+    locale: siteConfig.locale,
     title: siteConfig.title,
     description: siteConfig.description,
-    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteConfig.title,
+    description: siteConfig.description,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  formatDetection: {
+    email: false,
+    telephone: false,
   },
 };
 
@@ -60,6 +96,7 @@ export default function RootLayout({
       <head>
         <meta name="color-scheme" content="light dark" />
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <JsonLd data={{ "@context": "https://schema.org", "@graph": [websiteSchema, personSchema] }} />
       </head>
       <body suppressHydrationWarning>
         <Backdrop />
