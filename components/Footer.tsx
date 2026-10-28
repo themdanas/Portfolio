@@ -5,25 +5,26 @@ export default function Footer() {
   const currentYear = 2026;
 
   return (
-    <footer className="mt-9 pt-3.5 pb-6 border-t border-[var(--border-subtle)] text-[11px] text-[var(--text-muted)]">
-      <div className="wrap">
-        <div className="flex justify-between items-center gap-3 flex-wrap">
-          <span>© {currentYear} {siteConfig.shortName}. All rights reserved.</span>
+    <footer className="wrap pb-10">
+      <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-t border-[var(--rule)] pt-6 text-[0.875rem] text-[var(--ink-3)]">
+        <span>
+          © {currentYear} {siteConfig.name}
+        </span>
 
-          <span className="text-[var(--text-muted)] hidden md:inline">
-            Python · PyTorch · Transformers · LangGraph · PostgreSQL · Docker
-          </span>
-
-          <div className="flex items-center gap-3">
-            <Link href="/about" className="text-[var(--accent)] hover:underline no-underline">
-              About
-            </Link>
-            <span className="text-[var(--border-subtle)]" aria-hidden="true">/</span>
-            <Link href="/contact" className="text-[var(--accent)] hover:underline no-underline">
-              Contact
-            </Link>
-          </div>
-        </div>
+        <nav className="flex items-center gap-5" aria-label="Footer">
+          <a href={siteConfig.socials.github} target="_blank" rel="noreferrer" className="text-[var(--ink-3)] hover:text-[var(--ink)] transition-colors duration-150 no-underline">
+            GitHub
+          </a>
+          <a href={siteConfig.socials.linkedin} target="_blank" rel="noreferrer" className="text-[var(--ink-3)] hover:text-[var(--ink)] transition-colors duration-150 no-underline">
+            LinkedIn
+          </a>
+          <Link href="/about" className="text-[var(--ink-3)] hover:text-[var(--ink)] transition-colors duration-150 no-underline">
+            About
+          </Link>
+          <Link href="/contact" className="text-[var(--ink-3)] hover:text-[var(--ink)] transition-colors duration-150 no-underline">
+            Contact
+          </Link>
+        </nav>
       </div>
     </footer>
   );

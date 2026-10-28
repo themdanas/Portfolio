@@ -62,13 +62,13 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
     : [];
 
   return (
-    <article className="wrap pt-6 sm:pt-8 pb-12">
+    <article>
       {/* Project Header */}
       <ProjectHeader project={project} />
 
       {/* Main Technical Case Study Body */}
       {projectContent ? (
-        <div className="markdown-body">
+        <div className="prose">
           {renderedSegments.map((seg, idx) =>
             seg.type === "mermaid" ? (
               <MermaidDiagram key={idx} chart={seg.content} />
@@ -78,14 +78,13 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
           )}
         </div>
       ) : (
-        <div className="text-[14px] text-[var(--text-secondary)]">
+        <div className="prose">
           <p>{project.description}</p>
         </div>
       )}
 
       {/* Bottom Navigation */}
       <ProjectNavigation
-        currentProject={project}
         prevProject={prevProject}
         nextProject={nextProject}
       />

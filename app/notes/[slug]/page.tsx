@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import { marked } from "marked";
+import BackLink from "@/components/ui/BackLink";
 import { getAllNotes, getNoteBySlug } from "@/lib/notes";
+import { formatDate } from "@/lib/format";
 
 interface NotePageProps {
   params: Promise<{
@@ -36,36 +37,27 @@ export default async function NotePage({ params }: NotePageProps) {
   }
 
   const htmlContent = await marked.parse(note.content);
+  const meta = [note.category, note.date && formatDate(note.date), note.readTime].filter(Boolean);
 
   return (
-    <article className="wrap pt-6 sm:pt-8 pb-12">
-      <div className="mb-6">
-        <Link
-          href="/notes"
-          className="text-[12px] text-[var(--accent)] hover:underline inline-flex items-center gap-1 mb-4 no-underline"
-        >
-          ← Back to all notes
-        </Link>
+    <article>
+      <header className="mb-12 sm:mb-14">
+        <BackLink href="/notes">Notes</BackLink>
 
-        <h1 className="text-[24px] sm:text-[28px] font-semibold tracking-[-0.03em] text-[var(--text-primary)] mb-2 leading-[1.3]">
+        <h1 className="m-0 text-[clamp(2rem,4vw,2.5rem)] font-semibold leading-[1.1] tracking-[-0.03em] text-[var(--ink)]">
           {note.title}
         </h1>
 
-        <div className="flex items-center gap-2 text-[12px] text-[var(--text-muted)]">
-          {note.category && <span>{note.category}</span>}
-          {note.category && note.readTime && <span>·</span>}
-          {note.readTime && <span>{note.readTime}</span>}
-          {note.date && <span>·</span>}
-          {note.date && <span>{note.date}</span>}
-        </div>
-      </div>
+        {note.description && (
+          <p className="mt-4 mb-0 max-w-[36rem] text-[1.1875rem] leading-[1.5] text-[var(--ink-2)]">
+            {note.description}
+          </p>
+        )}
 
-      <div className="h-[1px] bg-[var(--border-subtle)] my-6" aria-hidden="true"></div>
+        {meta.length > 0 && <p className="meta mt-5 mb-0">{meta.join("  ·  ")}</p>}
+      </header>
 
-      <div
-        className="markdown-body"
-        dangerouslySetInnerHTML={{ __html: htmlContent }}
-      />
+      <div className="prose" dangerouslySetInnerHTML={{ __html: htmlContent }} />
     </article>
   );
 }

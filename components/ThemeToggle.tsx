@@ -1,54 +1,35 @@
 "use client";
 
-import { useEffect, useState, useSyncExternalStore } from "react";
 import { Sun, Moon } from "lucide-react";
 
-function subscribe() {
-  return () => {};
-}
-
 export default function ThemeToggle() {
-  const isMounted = useSyncExternalStore(subscribe, () => true, () => false);
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
-
-  useEffect(() => {
-    const stored = localStorage.getItem("theme") as "dark" | "light" | null;
-    if (stored) {
-      document.documentElement.setAttribute("data-theme", stored);
-    }
-  }, []);
-
   const toggleTheme = () => {
-    const currentTheme = (document.documentElement.getAttribute("data-theme") as "dark" | "light") || "dark";
-    const nextTheme = currentTheme === "dark" ? "light" : "dark";
-    setTheme(nextTheme);
-    document.documentElement.setAttribute("data-theme", nextTheme);
-    localStorage.setItem("theme", nextTheme);
+    const root = document.documentElement;
+    const current = root.getAttribute("data-theme") === "dark" ? "dark" : "light";
+    const next = current === "dark" ? "light" : "dark";
+
+    // Suppress color transitions for the swap so every surface changes on the same frame
+    root.setAttribute("data-theme-switching", "");
+    root.setAttribute("data-theme", next);
+    try {
+      localStorage.setItem("theme", next);
+    } catch {}
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => root.removeAttribute("data-theme-switching"));
+    });
   };
 
-  if (!isMounted) {
-    return (
-      <button
-        type="button"
-        className="text-[var(--text-muted)] p-1"
-        aria-label="Toggle theme"
-      >
-        <Sun size={15} />
-      </button>
-    );
-  }
-
-  const activeTheme = (typeof document !== "undefined" && document.documentElement.getAttribute("data-theme")) || theme;
-
+  // Both icons render; CSS shows the right one from data-theme, so there is no hydration flash
   return (
     <button
       type="button"
       onClick={toggleTheme}
-      className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors p-1 flex items-center justify-center cursor-pointer"
-      aria-label={activeTheme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
-      title={activeTheme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
+      className="pressable -mx-1.5 inline-flex size-8 items-center justify-center rounded-md text-[var(--ink-3)] hover:text-[var(--ink)] cursor-pointer"
+      aria-label="Toggle color theme"
+      title="Toggle color theme"
     >
-      {activeTheme === "dark" ? <Sun size={15} /> : <Moon size={15} />}
+      <Sun size={15} strokeWidth={1.75} className="hidden [[data-theme=dark]_&]:block" aria-hidden="true" />
+      <Moon size={15} strokeWidth={1.75} className="block [[data-theme=dark]_&]:hidden" aria-hidden="true" />
     </button>
   );
 }

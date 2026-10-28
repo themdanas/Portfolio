@@ -1,15 +1,18 @@
-
-import type { Metadata } from "next";
-import { Bodoni_Moda } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Hanken_Grotesk, Geist_Mono } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { siteConfig } from "@/data/site";
 import "./globals.css";
 
-const nameFont = Bodoni_Moda({
+const sans = Hanken_Grotesk({
   subsets: ["latin"],
-  variable: "--font-name",
-  weight: ["400", "500", "600"],
+  variable: "--font-sans",
+});
+
+const mono = Geist_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
 });
 
 export const metadata: Metadata = {
@@ -24,34 +27,41 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#fcfcfc" },
+    { media: "(prefers-color-scheme: dark)", color: "#0d0d0d" },
+  ],
+};
+
+// Resolve the theme before first paint: stored choice wins, otherwise follow the OS.
+const themeScript = `
+(function () {
+  try {
+    var stored = localStorage.getItem('theme');
+    var theme = stored === 'light' || stored === 'dark'
+      ? stored
+      : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', theme);
+  } catch (e) {}
+})();
+`;
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" data-theme="dark" suppressHydrationWarning>
+    <html lang="en" className={`${sans.variable} ${mono.variable}`} suppressHydrationWarning>
       <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                try {
-                  const storedTheme = localStorage.getItem('theme');
-                  const theme = storedTheme || 'dark';
-                  document.documentElement.setAttribute('data-theme', theme);
-                } catch (e) {}
-              })();
-            `,
-          }}
-        />
+        <meta name="color-scheme" content="light dark" />
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body className={nameFont.variable} suppressHydrationWarning>
-        <div className="site-root min-h-screen w-full flex flex-col justify-between">
-          <div>
-            <Header />
-            <main>{children}</main>
-          </div>
+      <body suppressHydrationWarning>
+        <div className="min-h-dvh flex flex-col">
+          <Header />
+          <main className="wrap flex-1 pt-10 sm:pt-16 pb-24">{children}</main>
           <Footer />
         </div>
       </body>

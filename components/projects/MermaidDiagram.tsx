@@ -20,36 +20,34 @@ export default function MermaidDiagram({ chart }: MermaidDiagramProps) {
         const mermaid = (await import("mermaid")).default;
         const isDark = document.documentElement.getAttribute("data-theme") !== "light";
 
+        const rootStyle = getComputedStyle(document.documentElement);
+        const fontFamily = rootStyle.getPropertyValue("--font-mono").trim() || "ui-monospace, monospace";
+        // Hex mirrors of the OKLCH tokens in globals.css; Mermaid's color parser doesn't read oklch()
+        const palette = isDark
+          ? { bg: "#171717", node: "#0d0d0d", ink: "#ebebeb", line: "#929292", rule: "#3d3d3d" }
+          : { bg: "#f3f3f3", node: "#fcfcfc", ink: "#161616", line: "#696969", rule: "#c4c4c4" };
+
         mermaid.initialize({
           startOnLoad: false,
-          theme: isDark ? "dark" : "default",
-          themeVariables: isDark
-            ? {
-                darkMode: true,
-                background: "#2B2B2E",
-                mainBkg: "#252528",
-                primaryColor: "#2B2B2E",
-                primaryTextColor: "#E5E5E7",
-                primaryBorderColor: "#79D9AD",
-                lineColor: "#85858B",
-                secondaryColor: "#1E1E20",
-                tertiaryColor: "#1E1E20",
-                fontSize: "12px",
-                fontFamily: "Inter, sans-serif"
-              }
-            : {
-                darkMode: false,
-                background: "#ffffff",
-                mainBkg: "#f7f8f7",
-                primaryColor: "#ffffff",
-                primaryTextColor: "#1b1d1e",
-                primaryBorderColor: "#087b5a",
-                lineColor: "#727977",
-                secondaryColor: "#f1f5f9",
-                tertiaryColor: "#ffffff",
-                fontSize: "12px",
-                fontFamily: "Inter, sans-serif"
-              },
+          theme: "base",
+          themeVariables: {
+            darkMode: isDark,
+            background: palette.bg,
+            mainBkg: palette.node,
+            primaryColor: palette.node,
+            primaryTextColor: palette.ink,
+            primaryBorderColor: palette.rule,
+            secondaryColor: palette.bg,
+            tertiaryColor: palette.bg,
+            clusterBkg: palette.bg,
+            clusterBorder: palette.rule,
+            lineColor: palette.line,
+            textColor: palette.ink,
+            edgeLabelBackground: palette.bg,
+            fontSize: "14px",
+            fontFamily,
+          },
+          themeCSS: ".node rect, .node polygon, .cluster rect { filter: none !important; }",
           securityLevel: "loose",
         });
 
@@ -84,20 +82,18 @@ export default function MermaidDiagram({ chart }: MermaidDiagramProps) {
   }, [chart, uniqueId]);
 
   return (
-    <div className="w-full my-5 overflow-hidden rounded-[7px] border border-[var(--border-subtle)] bg-[var(--bg-card)]">
-      <div className="overflow-x-auto p-4 flex justify-center">
+    <figure className="my-8 overflow-hidden rounded-lg border border-[var(--rule)] bg-[var(--surface)]" style={{ maxWidth: "none" }}>
+      <div className="flex min-h-[12rem] items-center justify-center overflow-x-auto p-5">
         {isRendered ? (
           <div
             ref={containerRef}
-            className="mermaid-wrapper max-w-full"
+            className="mermaid-wrapper w-full"
             dangerouslySetInnerHTML={{ __html: svgContent }}
           />
         ) : (
-          <div className="text-[12px] text-[var(--text-muted)] py-8 font-mono">
-            Rendering architecture diagram...
-          </div>
+          <div className="meta">Rendering diagram…</div>
         )}
       </div>
-    </div>
+    </figure>
   );
 }
