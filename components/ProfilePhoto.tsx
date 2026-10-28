@@ -20,28 +20,30 @@ export default function ProfilePhoto({
   const [hasError, setHasError] = useState<boolean>(!imageExists);
 
   return (
-    <div className="shrink-0 flex items-center justify-center">
-      <div
-        className="w-[128px] h-[128px] sm:w-[185px] sm:h-[185px] md:w-[200px] md:h-[200px] rounded-full overflow-hidden border border-[var(--border-subtle)] bg-[var(--bg-card)] flex items-center justify-center select-none shadow-sm"
-        aria-label={alt}
-      >
-        {!hasError && src ? (
-          <img
-            src={src}
-            alt={alt}
-            className="w-full h-full object-cover rounded-full"
-            onError={() => setHasError(true)}
-          />
-        ) : (
-          <span
-            style={{ fontFamily: "var(--font-name)" }}
-            className="font-name text-[34px] sm:text-[44px] md:text-[48px] font-semibold text-[var(--text-muted)] tracking-[-0.03em]"
-            aria-hidden="true"
-          >
-            {initials}
-          </span>
-        )}
-      </div>
+    <div className="relative size-12 shrink-0 overflow-hidden rounded-full bg-[var(--surface)] select-none">
+      {!hasError && src ? (
+        <img
+          src={src}
+          alt={alt}
+          width={48}
+          height={48}
+          className="size-full object-cover"
+          onError={() => setHasError(true)}
+        />
+      ) : (
+        <span
+          className="font-mono flex size-full items-center justify-center text-[0.8125rem] text-[var(--ink-3)]"
+          role="img"
+          aria-label={alt}
+        >
+          {initials}
+        </span>
+      )}
+      {/* Hairline ring drawn above the photo so it reads on both themes */}
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 rounded-full ring-1 ring-inset ring-[var(--rule)]"
+      />
     </div>
   );
 }

@@ -1,5 +1,6 @@
-import Link from "next/link";
 import { Project } from "@/data/projects";
+import BackLink from "@/components/ui/BackLink";
+import ExternalLink from "@/components/ui/ExternalLink";
 
 interface ProjectHeaderProps {
   project: Project;
@@ -7,65 +8,30 @@ interface ProjectHeaderProps {
 
 export default function ProjectHeader({ project }: ProjectHeaderProps) {
   return (
-    <div className="mb-8">
-      <Link
-        href="/projects"
-        className="text-[12px] text-[var(--accent)] hover:underline inline-flex items-center gap-1 mb-4 no-underline"
-      >
-        ← Back to projects
-      </Link>
+    <header className="mb-12 sm:mb-14">
+      <BackLink href="/projects">Work</BackLink>
 
-      <div className="flex items-baseline justify-between gap-3 flex-wrap mb-1.5">
-        <h1 className="text-[28px] sm:text-[32px] font-semibold tracking-[-0.03em] text-[var(--text-primary)] m-0">
-          {project.title}
-        </h1>
-        {project.status && (
-          <span className="text-[11px] text-[var(--text-muted)] font-mono border border-[var(--border-subtle)] px-2 py-0.5 rounded-[4px]">
-            {project.status}
-          </span>
-        )}
-      </div>
+      <h1 className="m-0 text-[clamp(2rem,4vw,2.5rem)] font-semibold leading-[1.1] tracking-[-0.03em] text-[var(--ink)]">
+        {project.title}
+      </h1>
 
-      <p className="text-[15px] italic text-[var(--text-secondary)] mb-3 leading-[1.5]">
+      <p className="mt-4 mb-0 max-w-[36rem] text-[1.1875rem] leading-[1.5] text-[var(--ink-2)]">
         {project.summary}
       </p>
 
-      {/* Links line */}
-      <div className="flex items-center gap-3 text-[13px] mb-3">
-        <a
-          href={project.githubUrl}
-          target="_blank"
-          rel="noreferrer"
-          className="text-[var(--accent)] hover:underline no-underline"
-        >
-          GitHub ↗
-        </a>
-        {project.demoUrl && (
-          <>
-            <span className="text-[var(--text-muted)] select-none">·</span>
-            <a
-              href={project.demoUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="text-[var(--accent)] hover:underline no-underline"
-            >
-              Live Demo ↗
-            </a>
-          </>
-        )}
-      </div>
-
-      {/* Compact technology line */}
-      <div className="text-[12px] text-[var(--text-muted)] flex flex-wrap gap-x-2 gap-y-1">
-        {project.technologies.map((tech, idx) => (
-          <span key={tech} className="flex items-center">
-            {idx > 0 && <span className="mr-2 text-[var(--text-muted)] select-none">·</span>}
-            {tech}
-          </span>
-        ))}
-      </div>
-
-      <div className="h-[1px] bg-[var(--border-subtle)] mt-6" aria-hidden="true"></div>
-    </div>
+      <dl className="spec mt-10">
+        <div>
+          <dt>Stack</dt>
+          <dd>{project.technologies.join(", ")}</dd>
+        </div>
+        <div>
+          <dt>Links</dt>
+          <dd className="flex flex-wrap gap-x-5 gap-y-1">
+            <ExternalLink href={project.githubUrl}>Source on GitHub</ExternalLink>
+            {project.demoUrl && <ExternalLink href={project.demoUrl}>Live demo</ExternalLink>}
+          </dd>
+        </div>
+      </dl>
+    </header>
   );
 }

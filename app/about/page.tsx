@@ -1,63 +1,66 @@
-import Link from "next/link";
+import StackList from "@/components/StackList";
+import PageIntro from "@/components/ui/PageIntro";
+import SectionHeading from "@/components/ui/SectionHeading";
 import { siteConfig } from "@/data/site";
+import JsonLd from "@/components/JsonLd";
+import { absoluteUrl, breadcrumbSchema, pageMetadata, personId } from "@/lib/seo";
 
-export const metadata = {
-  title: "About — MD Anas",
-  description: "About MD Anas, an AI Systems & LLM Infrastructure Engineer.",
-};
+export const metadata = pageMetadata({
+  title: "About",
+  description:
+    "About MD Anas, an AI Engineer and Computer Science student at Government Engineering College, Ajmer, working on LLM infrastructure, AI agents, and applied machine learning.",
+  path: "/about",
+});
 
 export default function AboutPage() {
   return (
-    <div className="wrap pt-6 sm:pt-8 pb-12">
-      <div className="mb-6">
-        <Link
-          href="/"
-          className="text-[12px] text-[var(--accent)] hover:underline inline-flex items-center gap-1 mb-4 no-underline"
-        >
-          ← Back to home
-        </Link>
-        <h1 className="text-[26px] sm:text-[28px] font-semibold tracking-[-0.03em] text-[var(--text-primary)] mb-2">
-          About
-        </h1>
-      </div>
+    <>
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@graph": [
+            { "@type": "AboutPage", url: absoluteUrl("/about"), name: `About ${siteConfig.name}`, mainEntity: { "@id": personId } },
+            breadcrumbSchema([{ name: "Home", path: "/" }, { name: "About", path: "/about" }]),
+          ],
+        }}
+      />
+      <PageIntro title="About" />
 
-      <div className="space-y-4 text-[14.5px] leading-[1.65] text-[var(--text-secondary)] mb-8">
+      <div className="prose">
         <p>
-          I am <strong>{siteConfig.name}</strong>, a Computer Science Engineering student at{" "}
-          <span className="text-[var(--text-primary)]">{siteConfig.about.institution}</span>.
+          I&apos;m {siteConfig.name}, a Computer Science Engineering student at{" "}
+          {siteConfig.about.institution}.
         </p>
         <p>
-          My technical focus centers on <strong>{siteConfig.about.focus}</strong>. I learn through direct implementation—profiling attention mechanisms, implementing Transformer architectures from scratch, and architecting resilient stateful agent graphs.
+          My focus is <strong>{siteConfig.about.focus}</strong>. I learn by implementing things directly:
+          profiling attention mechanisms, writing Transformer architectures from scratch, and building
+          stateful agent graphs that hold up under failure.
         </p>
-        <p>
-          My core engineering interests include {siteConfig.about.interests}.
-        </p>
+        <p>The work I care most about is {siteConfig.about.interests}.</p>
       </div>
 
-      <div className="h-[1px] bg-[var(--border-subtle)] my-6" aria-hidden="true"></div>
+      <section className="mt-[var(--section-gap)]" aria-labelledby="background-title">
+        <SectionHeading id="background-title">Background</SectionHeading>
+        <dl className="spec">
+          <div>
+            <dt>Education</dt>
+            <dd>
+              {siteConfig.about.education}
+              <br />
+              <span className="text-[var(--ink-3)]">{siteConfig.about.institution}</span>
+            </dd>
+          </div>
+          <div>
+            <dt>Focus</dt>
+            <dd>{siteConfig.about.focus}</dd>
+          </div>
+        </dl>
+      </section>
 
-      <h2 className="text-[18px] font-semibold text-[var(--text-primary)] mb-4">
-        Technical Skills
-      </h2>
-
-      <div className="space-y-3 text-[13.5px]">
-        <div>
-          <span className="font-semibold text-[var(--text-primary)]">Languages: </span>
-          <span className="text-[var(--text-secondary)]">{siteConfig.skills.languages.join(", ")}</span>
-        </div>
-        <div>
-          <span className="font-semibold text-[var(--text-primary)]">AI/ML: </span>
-          <span className="text-[var(--text-secondary)]">{siteConfig.skills.aiMl.join(", ")}</span>
-        </div>
-        <div>
-          <span className="font-semibold text-[var(--text-primary)]">LLM Engineering: </span>
-          <span className="text-[var(--text-secondary)]">{siteConfig.skills.llmEngineering.join(", ")}</span>
-        </div>
-        <div>
-          <span className="font-semibold text-[var(--text-primary)]">Backend & Infrastructure: </span>
-          <span className="text-[var(--text-secondary)]">{siteConfig.skills.backendInfra.join(", ")}</span>
-        </div>
-      </div>
-    </div>
+      <section className="mt-[var(--section-gap)]" aria-labelledby="stack-title">
+        <SectionHeading id="stack-title">Stack</SectionHeading>
+        <StackList />
+      </section>
+    </>
   );
 }

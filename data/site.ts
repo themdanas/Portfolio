@@ -1,8 +1,14 @@
+// Production origin, overridable per deployment (e.g. a custom domain or preview URL)
+export const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://mdanas-ml.vercel.app").replace(/\/+$/, "");
+
 export interface SiteConfig {
   name: string;
   shortName: string;
   title: string;
   description: string;
+  jobTitle: string;
+  locale: string;
+  keywords: string[];
   eyebrow: string;
   heroHeading: string;
   heroBio: string;
@@ -12,12 +18,6 @@ export interface SiteConfig {
     linkedin: string;
     email: string;
     resume: string;
-  };
-  skills: {
-    languages: string[];
-    aiMl: string[];
-    llmEngineering: string[];
-    backendInfra: string[];
   };
   about: {
     education: string;
@@ -31,8 +31,26 @@ export interface SiteConfig {
 export const siteConfig: SiteConfig = {
   name: "MD Anas",
   shortName: "MD",
-  title: "MD — AI Engineer",
-  description: "MD — AI Engineer and Computer Science student building LLM infrastructure, agentic systems, and applied machine learning projects.",
+  title: "MD Anas — AI Engineer",
+  description: "MD Anas is an AI Engineer and Computer Science student building LLM infrastructure, agentic systems, and applied machine learning projects.",
+  jobTitle: "AI Engineer",
+  locale: "en_US",
+  keywords: [
+    "MD Anas",
+    "AI Engineer",
+    "Machine Learning Engineer",
+    "LLM Engineer",
+    "LLM inference",
+    "KV cache",
+    "continuous batching",
+    "AI agents",
+    "LangGraph",
+    "RAG",
+    "fine-tuning",
+    "LoRA",
+    "PyTorch",
+    "Transformers",
+  ],
   eyebrow: "AI ENGINEER / COMPUTER SCIENCE STUDENT",
   heroHeading: "AI Engineer building LLM systems from the model to production.",
   heroBio: "Computer Science student focused on LLM inference, agentic systems, and applied machine learning. I learn by building real systems and understanding how they work.",
@@ -42,12 +60,6 @@ export const siteConfig: SiteConfig = {
     linkedin: "https://www.linkedin.com/in/md-anas-ml/",
     email: "mailto:anasthemd@gmail.com",
     resume: "/resume.pdf"
-  },
-  skills: {
-    languages: ["Python", "C++", "SQL"],
-    aiMl: ["PyTorch", "TensorFlow", "Scikit-learn", "Hugging Face Transformers"],
-    llmEngineering: ["LangChain", "LangGraph", "RAG", "Embeddings", "Vector Databases"],
-    backendInfra: ["FastAPI", "PostgreSQL", "Docker", "AWS", "Git"]
   },
   about: {
     education: "B.Tech in Computer Science Engineering",

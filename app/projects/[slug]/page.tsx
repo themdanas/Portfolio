@@ -4,7 +4,9 @@ import ProjectHeader from "@/components/projects/ProjectHeader";
 import ProjectNavigation from "@/components/projects/ProjectNavigation";
 import MermaidDiagram from "@/components/projects/MermaidDiagram";
 import { projects, getProjectBySlug, getAllProjectSlugs } from "@/data/projects";
+import JsonLd from "@/components/JsonLd";
 import { getProjectContent } from "@/lib/projectContent";
+import { absoluteUrl, breadcrumbSchema, pageMetadata, personId } from "@/lib/seo";
 
 interface ProjectPageProps {
   params: Promise<{
@@ -25,14 +27,18 @@ export async function generateMetadata({ params }: ProjectPageProps) {
 
   if (!project) {
     return {
-      title: "Project Not Found — MD Anas",
+      title: "Project Not Found",
+      robots: { index: false },
     };
   }
 
-  return {
-    title: `${project.title} — MD Anas`,
+  return pageMetadata({
+    title: project.title,
     description: project.summary,
-  };
+    path: `/projects/${project.slug}`,
+    keywords: [...project.metadata, ...project.technologies],
+    openGraph: { type: "article", authors: [absoluteUrl("/about")], tags: project.metadata },
+  });
 }
 
 export default async function ProjectDetailPage({ params }: ProjectPageProps) {
@@ -61,14 +67,41 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
       )
     : [];
 
+  const url = absoluteUrl(`/projects/${project.slug}`);
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "SoftwareSourceCode",
+        "@id": `${url}#project`,
+        name: project.title,
+        description: project.summary,
+        url,
+        image: `${url}/opengraph-image`,
+        codeRepository: project.githubUrl,
+        programmingLanguage: project.technologies,
+        keywords: project.metadata.join(", "),
+        author: { "@id": personId },
+        creativeWorkStatus: project.status,
+      },
+      breadcrumbSchema([
+        { name: "Home", path: "/" },
+        { name: "Work", path: "/projects" },
+        { name: project.title, path: `/projects/${project.slug}` },
+      ]),
+    ],
+  };
+
   return (
-    <article className="wrap pt-6 sm:pt-8 pb-12">
+    <article>
+      <JsonLd data={jsonLd} />
+
       {/* Project Header */}
       <ProjectHeader project={project} />
 
       {/* Main Technical Case Study Body */}
       {projectContent ? (
-        <div className="markdown-body">
+        <div className="prose">
           {renderedSegments.map((seg, idx) =>
             seg.type === "mermaid" ? (
               <MermaidDiagram key={idx} chart={seg.content} />
@@ -78,14 +111,13 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
           )}
         </div>
       ) : (
-        <div className="text-[14px] text-[var(--text-secondary)]">
+        <div className="prose">
           <p>{project.description}</p>
         </div>
       )}
 
       {/* Bottom Navigation */}
       <ProjectNavigation
-        currentProject={project}
         prevProject={prevProject}
         nextProject={nextProject}
       />
