@@ -7,8 +7,6 @@ interface ProjectHeaderProps {
 }
 
 export default function ProjectHeader({ project }: ProjectHeaderProps) {
-  const isActive = project.status?.toLowerCase() === "building";
-
   return (
     <header className="mb-12 sm:mb-14">
       <BackLink href="/projects">Work</BackLink>
@@ -22,18 +20,6 @@ export default function ProjectHeader({ project }: ProjectHeaderProps) {
       </p>
 
       <dl className="spec mt-10">
-        {project.status && (
-          <div>
-            <dt>Status</dt>
-            <dd className="inline-flex items-center gap-2">
-              <span
-                aria-hidden="true"
-                className={`size-1.5 rounded-full ${isActive ? "bg-[var(--accent)]" : "bg-[var(--rule-strong)]"}`}
-              />
-              {project.status}
-            </dd>
-          </div>
-        )}
         <div>
           <dt>Stack</dt>
           <dd>{project.technologies.join(", ")}</dd>

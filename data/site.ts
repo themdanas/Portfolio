@@ -13,12 +13,6 @@ export interface SiteConfig {
     email: string;
     resume: string;
   };
-  skills: {
-    languages: string[];
-    aiMl: string[];
-    llmEngineering: string[];
-    backendInfra: string[];
-  };
   about: {
     education: string;
     institution: string;
@@ -42,12 +36,6 @@ export const siteConfig: SiteConfig = {
     linkedin: "https://www.linkedin.com/in/md-anas-ml/",
     email: "mailto:anasthemd@gmail.com",
     resume: "/resume.pdf"
-  },
-  skills: {
-    languages: ["Python", "C++", "SQL"],
-    aiMl: ["PyTorch", "TensorFlow", "Scikit-learn", "Hugging Face Transformers"],
-    llmEngineering: ["LangChain", "LangGraph", "RAG", "Embeddings", "Vector Databases"],
-    backendInfra: ["FastAPI", "PostgreSQL", "Docker", "AWS", "Git"]
   },
   about: {
     education: "B.Tech in Computer Science Engineering",

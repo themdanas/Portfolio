@@ -22,12 +22,6 @@ export default function NavLink({ href, children, className = "" }: NavLinkProps
       } ${className}`}
     >
       {children}
-      {isActive && (
-        <span
-          aria-hidden="true"
-          className="absolute left-1/2 -bottom-1 size-1 -translate-x-1/2 rounded-full bg-[var(--accent)]"
-        />
-      )}
     </Link>
   );
 }

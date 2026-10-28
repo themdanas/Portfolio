@@ -2,6 +2,9 @@ import type { Metadata, Viewport } from "next";
 import { Hanken_Grotesk, Geist_Mono } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Backdrop from "@/components/Backdrop";
+import EdgeBlur from "@/components/EdgeBlur";
+import SmoothScroll from "@/components/SmoothScroll";
 import { siteConfig } from "@/data/site";
 import "./globals.css";
 
@@ -59,11 +62,14 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body suppressHydrationWarning>
-        <div className="min-h-dvh flex flex-col">
+        <Backdrop />
+        <SmoothScroll />
+        <div className="relative z-[1] min-h-dvh flex flex-col">
           <Header />
           <main className="wrap flex-1 pt-10 sm:pt-16 pb-24">{children}</main>
           <Footer />
         </div>
+        <EdgeBlur />
       </body>
     </html>
   );

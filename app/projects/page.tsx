@@ -1,4 +1,4 @@
-import ProjectRow from "@/components/ProjectRow";
+import ProjectPlate from "@/components/ProjectPlate";
 import PageIntro from "@/components/ui/PageIntro";
 import { projects } from "@/data/projects";
 
@@ -14,9 +14,9 @@ export default function ProjectsPage() {
         LLM infrastructure, agents, and models built from scratch. Each one has a write-up on how it works.
       </PageIntro>
 
-      <div>
+      <div className="grid gap-2.5">
         {projects.map((project) => (
-          <ProjectRow key={project.id} project={project} />
+          <ProjectPlate key={project.id} project={project} />
         ))}
       </div>
     </>

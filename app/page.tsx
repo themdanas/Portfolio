@@ -1,5 +1,5 @@
 import Hero from "@/components/Hero";
-import ProjectRow from "@/components/ProjectRow";
+import ProjectPlate from "@/components/ProjectPlate";
 import NoteRow from "@/components/NoteRow";
 import StackList from "@/components/StackList";
 import SectionHeading from "@/components/ui/SectionHeading";
@@ -18,9 +18,9 @@ export default function HomePage() {
         <SectionHeading id="work-title" href="/projects" linkLabel="All projects">
           Selected work
         </SectionHeading>
-        <div>
+        <div className="mt-4 grid gap-2.5">
           {featuredProjects.map((project) => (
-            <ProjectRow key={project.id} project={project} />
+            <ProjectPlate key={project.id} project={project} />
           ))}
         </div>
       </section>

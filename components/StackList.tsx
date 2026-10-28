@@ -1,19 +1,22 @@
-import { siteConfig } from "@/data/site";
-
-const groups = [
-  { label: "AI / ML", items: siteConfig.skills.aiMl },
-  { label: "LLM systems", items: siteConfig.skills.llmEngineering },
-  { label: "Languages", items: siteConfig.skills.languages },
-  { label: "Infra", items: siteConfig.skills.backendInfra },
-];
+import SkillChip from "@/components/ui/SkillChip";
+import { stack } from "@/data/stack";
 
 export default function StackList() {
   return (
-    <dl className="spec">
-      {groups.map((group) => (
-        <div key={group.label}>
-          <dt>{group.label}</dt>
-          <dd>{group.items.join(", ")}</dd>
+    <dl className="m-0 mt-5 grid gap-2">
+      {stack.map((group) => (
+        // Label above chips at every width so each group gets the full measure and stays on one line
+        <div key={group.label} className="grid gap-2.5">
+          <dt className="meta">{group.label}</dt>
+          <dd className="m-0">
+            <ul role="list" className="m-0 flex list-none flex-wrap gap-2 p-0">
+              {group.items.map((item) => (
+                <li key={item.name}>
+                  <SkillChip {...item} />
+                </li>
+              ))}
+            </ul>
+          </dd>
         </div>
       ))}
     </dl>
