@@ -6,7 +6,7 @@ import { pageMetadata } from "@/lib/seo";
 export const metadata = pageMetadata({
   title: "Work",
   description:
-    "Projects by MD Anas: an LLM inference server, a LangGraph support agent, GPT and diffusion language models from scratch, RAG pipelines, and LoRA fine-tuning.",
+    "Projects by MD Anas: an LLM inference server, a LangGraph support agent, GPT and diffusion language models from scratch, RAG pipelines, recommendation systems, and LoRA fine-tuning.",
   path: "/projects",
 });
 

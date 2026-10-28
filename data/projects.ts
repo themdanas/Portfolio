@@ -38,6 +38,18 @@ export const projects: Project[] = [
     featured: true
   },
   {
+    id: "tiny-diffusion-language-model",
+    slug: "tiny-diffusion-language-model",
+    title: "Tiny Diffusion Language Model",
+    summary: "A discrete diffusion language model built from scratch using PyTorch and Transformer Encoders, trained on TinyStories. Generates text through iterative denoising instead of conventional left-to-right autoregressive decoding.",
+    description: "Discrete diffusion language model (~13.84M params) built from scratch in PyTorch on TinyStories. Features bidirectional Transformer Encoders, learned timestep embeddings, and 64-step iterative confidence-based remasking.",
+    technologies: ["Python", "PyTorch", "Hugging Face Tokenizers", "Transformers", "Accelerate", "ImageIO"],
+    metadata: ["Discrete Diffusion", "PyTorch", "Transformer Encoder", "Iterative Denoising", "TinyStories"],
+    githubUrl: "https://github.com/themdanas/diffusion_language_model",
+    status: "Implemented & Evaluated",
+    featured: false
+  },
+  {
     id: "gpt-from-scratch",
     slug: "gpt-from-scratch",
     title: "GPT from Scratch",
@@ -74,14 +86,14 @@ export const projects: Project[] = [
     featured: false
   },
   {
-    id: "tiny-diffusion-language-model",
-    slug: "tiny-diffusion-language-model",
-    title: "Tiny Diffusion Language Model",
-    summary: "A discrete diffusion language model built from scratch using PyTorch and Transformer Encoders, trained on TinyStories. Generates text through iterative denoising instead of conventional left-to-right autoregressive decoding.",
-    description: "Discrete diffusion language model (~13.84M params) built from scratch in PyTorch on TinyStories. Features bidirectional Transformer Encoders, learned timestep embeddings, and 64-step iterative confidence-based remasking.",
-    technologies: ["Python", "PyTorch", "Hugging Face Tokenizers", "Transformers", "Accelerate", "ImageIO"],
-    metadata: ["Discrete Diffusion", "PyTorch", "Transformer Encoder", "Iterative Denoising", "TinyStories"],
-    githubUrl: "https://github.com/themdanas/diffusion_language_model",
+    id: "product-recommendor",
+    slug: "product-recommendor",
+    title: "Product Recommender",
+    summary: "A content-based recommendation engine and semantic product search system for e-commerce appliances, combining TF-IDF vectorization and Nearest Neighbors cosine similarity with a FastAPI backend and Streamlit interface.",
+    description: "Content-based recommendation system and semantic search for e-commerce appliances using TF-IDF vectorization, Nearest Neighbors, FastAPI, and Streamlit on Amazon metadata.",
+    technologies: ["Python", "Scikit-learn", "TF-IDF", "FastAPI", "Streamlit", "Docker"],
+    metadata: ["Recommender Systems", "Scikit-learn", "TF-IDF", "Cosine Similarity", "FastAPI", "Docker"],
+    githubUrl: "https://github.com/themdanas/product-recommendor",
     status: "Implemented & Evaluated",
     featured: false
   }
@@ -97,6 +109,13 @@ export function getProjectBySlug(slug: string): Project | undefined {
     slug === "tiny-diffusion-lm"
   ) {
     return projects.find((p) => p.slug === "tiny-diffusion-language-model");
+  }
+  if (
+    slug === "product-recommender" ||
+    slug === "product_recommender" ||
+    slug === "product_recommendor"
+  ) {
+    return projects.find((p) => p.slug === "product-recommendor");
   }
   return projects.find((p) => p.slug === slug);
 }
